@@ -29,4 +29,10 @@ class LoginController extends Controller
             return redirect()->back()->with('error', 'Email hoặc Password không chính xác');
         }
     }
+
+    public function postLogout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect(route('login'));
+    }
 }
