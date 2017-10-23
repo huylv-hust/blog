@@ -10,7 +10,7 @@ class Post extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'post';
+    protected $table = 'posts';
     protected $primaryKey = 'id';
     protected $fillable = [
         'id',

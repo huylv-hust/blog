@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Test;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +24,17 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            //'name' => new Test('content'),
-            'name' => 'required|max:50',
-            'content' => 'required',
-            'category_id' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6'
         ];
     }
 
     public function messages()
     {
         return [
-            'required' => 'Trường :attribute bắt buộc nhập (Mày ngu vkl).',
-            'max' => 'Chỉ được nhập tối đa :max ký tự (Mày ngu vkl).',
+            'required' => 'Hãy nhập :attribute!',
+            'email' => 'Định dạng :attribute bị sai!',
+            'min' => 'Hãy nhập tối thiểu :min ký tự!'
         ];
     }
 }
