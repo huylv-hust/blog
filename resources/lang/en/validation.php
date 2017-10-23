@@ -116,6 +116,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Name',
+        'content' => 'Content',
+        'category_id' => 'Category',
+    ],
 
 ];
