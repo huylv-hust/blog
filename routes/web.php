@@ -46,8 +46,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('/password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 
 
-    Route::get('/password/reset/{token}', 'ResetPasswordController@index');
-    Route::post('/password/reset', 'ResetPasswordController@postReset')->name('password.reset');
+    Route::get('/password/reset/{token}', 'ResetPasswordController@index')->name('password.reset');
+    Route::post('/password/reset', 'ResetPasswordController@postReset')->name('reset');
     //route dashboard
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 });
