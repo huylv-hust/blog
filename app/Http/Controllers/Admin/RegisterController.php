@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Admin;
 use App\Http\Requests\RegisterRequest;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -28,13 +27,13 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(RegisterRequest $request, Admin $admin)
+    protected function create(RegisterRequest $request, User $user)
     {
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
         //save
-        if ($user = $admin->create($data)) {
-            Auth::guard('admin')->login($user);
+        if ($result = $user->create($data)) {
+            Auth::guard('users')->login($result);
             return redirect(route('dashboard'));
         } else {
             return redirect()->back()->with('error', 'Có lỗi xảy ra, xin hãy thử lại!');

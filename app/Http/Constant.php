@@ -10,4 +10,8 @@ namespace App\Http;
 class Constant
 {
     public static $limit = 1;
+    public static $role = [
+        '1' => 'Admin',
+        '2' => 'Editor'
+    ];
 }

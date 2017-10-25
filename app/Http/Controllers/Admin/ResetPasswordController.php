@@ -79,11 +79,11 @@ class ResetPasswordController extends Controller
 
     public function broker()
     {
-        return Password::broker('admin');
+        return Password::broker('users');
     }
 
     protected function guard()
     {
-        return Auth::guard('admin');
+        return Auth::guard('users');
     }
 }

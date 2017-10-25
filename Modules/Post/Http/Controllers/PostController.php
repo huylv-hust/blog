@@ -14,7 +14,8 @@ class PostController extends Controller
     {
         $route = route('post.create');
         $category = ['' => ''] + Category::getAllCategory();
-        return view('post::create', compact('route', 'category'));
+        $title = 'New Post';
+        return view('post::create', compact('route', 'category', 'title'));
     }
 
     public function postCreate(PostRequest $request, Post $post)
@@ -32,7 +33,8 @@ class PostController extends Controller
         $post = Post::findorFail($id);
         $category = ['' => ''] + Category::getAllCategory();
         $route = route('post.edit', ['id' => $id]);
-        return view('post::create', compact('post', 'category', 'route'));
+        $title = 'Edit Post';
+        return view('post::create', compact('post', 'category', 'route', 'title'));
     }
 
     public function postEdit(PostRequest $request, $id)
@@ -51,7 +53,8 @@ class PostController extends Controller
         $result = $post->getData($request);
         $route = route('post.list');
         $request->session()->put('post_list', $request->fullUrl());
-        return view('post::list', compact('result', 'route'));
+        $title = 'All Posts';
+        return view('post::list', compact('result', 'route', 'title'));
     }
 
     public function postDelete(Request $request)

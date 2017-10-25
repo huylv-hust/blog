@@ -16,14 +16,15 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('admin.login');
+        $title = 'Login';
+        return view('admin.login', compact('title'));
     }
 
     public function postLogin(LoginRequest $request)
     {
         $data['email'] = $request->email;
         $data['password'] = $request->password;
-        if (Auth::guard('admin')->attempt($data)) {
+        if (Auth::guard('users')->attempt($data)) {
             return redirect(route('dashboard'));
         } else {
             return redirect()->back()->with('error', 'Email hoặc Password không chính xác');
@@ -32,7 +33,7 @@ class LoginController extends Controller
 
     public function postLogout()
     {
-        Auth::guard('admin')->logout();
+        Auth::guard('users')->logout();
         return redirect(route('login'));
     }
 }
