@@ -144,8 +144,8 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-circle-o"></i> All Categories</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i> New Category</a></li>
+                        <li><a href="{{ route('category.list') }}"><i class="fa fa-circle-o"></i> All Categories</a></li>
+                        <li><a href="{{ route('category.create') }}"><i class="fa fa-circle-o"></i> New Category</a></li>
                     </ul>
                 </li>
                 <!-- Posts -->

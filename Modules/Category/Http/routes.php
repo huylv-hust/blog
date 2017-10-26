@@ -1,11 +1,11 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'category', 'namespace' => 'Modules\Category\Http\Controllers'], function()
-{
-    Route::get('/create', 'PostController@getCreate')->name('post.create');
-    Route::post('/create', 'PostController@postCreate');
-    Route::get('/edit/{id}', 'PostController@getEdit')->name('post.edit');
-    Route::post('/edit/{id}', 'PostController@postEdit');
-    Route::get('/list', 'PostController@getList')->name('post.list');
-    Route::post('/delete', 'PostController@postDelete')->name('post.delete');
+Route::group(['middleware' => 'web', 'prefix' => 'admin/category', 'namespace' => 'Modules\Category\Http\Controllers'], function () {
+    Route::get('/list', 'CategoryController@index')->name('category.list');
+    Route::get('/create', 'CategoryController@create')->name('category.create');
+    Route::post('/create', 'CategoryController@store');
+    Route::get('/edit/{id}', 'CategoryController@edit')->name('category.edit');
+    Route::post('/edit/{id}', 'CategoryController@update');
+    Route::post('/delete', 'CategoryController@destroy')->name('category.delete');
+    Route::post('/status', 'CategoryController@status')->name('category.status');
 });

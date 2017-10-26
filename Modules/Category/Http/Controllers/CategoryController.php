@@ -2,6 +2,7 @@
 
 namespace Modules\Category\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -12,9 +13,13 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index(Request $request, Category $category)
     {
-        return view('category::index');
+        $result = $category->getData($request);
+        $route = route('category.list');
+        $request->session()->put('category_list', $request->fullUrl());
+        $title = 'All Categories';
+        return view('category::index', compact('result', 'route', 'title'));
     }
 
     /**
@@ -67,6 +72,10 @@ class CategoryController extends Controller
      * @return Response
      */
     public function destroy()
+    {
+    }
+
+    public function status()
     {
     }
 }

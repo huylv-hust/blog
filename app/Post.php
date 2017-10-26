@@ -5,6 +5,7 @@ namespace App;
 use App\Http\Constant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -18,12 +19,19 @@ class Post extends Model
         'content',
         'category_id',
         'tag',
+        'user_id'
     ];
     protected $dates = ['deleted_at'];
+    protected $user_id;
 
-    public function categories()
+    public function __construct()
     {
-        return $this->belongsTo('App\Category', 'category_id')->whereNotNull('id');
+        $this->user_id = Auth::guard('users')->user()->id;
+    }
+
+    public function users()
+    {
+        return $this->belongsTo('App\User', 'user_id')->whereNotNull('id');
     }
 
     public function getWhere($filter)
@@ -36,9 +44,7 @@ class Post extends Model
         if (isset($filter['name']) && $filter['name']) {
             $query->where('name', 'like', '%' . $filter['name'] . '%');
         };
-
         $query->orderBy('id');
-
         return $query;
     }
 
