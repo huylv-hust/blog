@@ -518,3 +518,18 @@
     <!-- /.content -->
     </div>
 @endsection
+
+@section('bot-css-js')
+    <!-- Morris.js charts -->
+    <script src="{{ asset('bower_components/raphael/raphael.min.js') }}"></script>
+    <script src="{{ asset('bower_components/morris.js/morris.min.js') }}"></script>
+    <!-- jvectormap -->
+    <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
+    <script src="{{ asset('plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="{{ asset('bower_components/jquery-knob/dist/jquery.knob.min.js') }}"></script>
+    <!-- Bootstrap WYSIHTML5 -->
+    <script src="{{ asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+@endsection

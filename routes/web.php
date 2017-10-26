@@ -27,12 +27,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     //route password
     Route::get('/password/forgot', 'ForgotPasswordController@index')->name('password.forgot');
     Route::post('/password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-
-
     Route::get('/password/reset/{token}', 'ResetPasswordController@index')->name('password.reset');
     Route::post('/password/reset', 'ResetPasswordController@postReset')->name('reset');
     //route dashboard
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    //route media
+    Route::get('/media', 'MediaController@index')->name('media');
+    Route::post('/media', 'MediaController@postMedia');
+    Route::post('/media/delete', 'MediaController@deleteMedia');
     //route permission
     Route::get('/permission', function () {
         return view('permission');

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2017 at 02:13 PM
+-- Generation Time: Oct 26, 2017 at 11:44 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -25,37 +25,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
---
-
-CREATE TABLE `admin` (
-  `id` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `role` int(11) DEFAULT '1',
-  `remember_token` varchar(100) DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `admin`
---
-
-INSERT INTO `admin` (`id`, `email`, `password`, `name`, `role`, `remember_token`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'levanhuy93@gmail.com', '$2y$10$i6O.64qXnQlNEMDKiuxfRepqDWZ5t.A/dmMa7nVmgcV6e/2xFlHzG', 'Huy', 1, NULL, NULL, '2017-10-23 11:39:30', '2017-10-23 11:39:30');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `categories`
 --
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `name` varchar(500) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '2',
   `deleted_at` datetime DEFAULT NULL,
   `updated_at` datetime NOT NULL,
   `created_at` datetime NOT NULL
@@ -65,11 +42,30 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `deleted_at`, `updated_at`, `created_at`) VALUES
-(1, 'Việt Nam', NULL, '2017-10-19 00:00:00', '2017-10-19 00:00:00'),
-(2, 'Nhật Bản', NULL, '2017-10-19 00:00:00', '2017-10-19 00:00:00'),
-(3, 'Hàn Quốc', NULL, '2017-10-18 00:00:00', '2017-10-18 00:00:00'),
-(4, 'Âu Mỹ', NULL, '2017-10-18 00:00:00', '2017-10-18 00:00:00');
+INSERT INTO `categories` (`id`, `name`, `user_id`, `status`, `deleted_at`, `updated_at`, `created_at`) VALUES
+(1, 'Việt Nam', 0, 2, NULL, '2017-10-19 00:00:00', '2017-10-19 00:00:00'),
+(2, 'Nhật Bản', 0, 2, NULL, '2017-10-19 00:00:00', '2017-10-19 00:00:00'),
+(3, 'Hàn Quốc', 0, 2, NULL, '2017-10-18 00:00:00', '2017-10-18 00:00:00'),
+(4, 'Âu Mỹ', 0, 2, NULL, '2017-10-18 00:00:00', '2017-10-18 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
+('levanhuy93@gmail.com', '$2y$10$/ea4IPX3p5SH6eqrQbgFkuX9yF72k5BE4AbzPq8.khhh17MDNsLh2', '2017-10-24 04:19:01');
 
 -- --------------------------------------------------------
 
@@ -81,8 +77,10 @@ CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
   `name` varchar(500) NOT NULL,
   `content` text NOT NULL,
-  `category_id` int(11) NOT NULL,
+  `category_id` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `tag` text,
+  `status` int(11) NOT NULL DEFAULT '2',
   `deleted_at` datetime DEFAULT NULL,
   `updated_at` datetime NOT NULL,
   `created_at` datetime NOT NULL
@@ -92,13 +90,13 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`id`, `name`, `content`, `category_id`, `tag`, `deleted_at`, `updated_at`, `created_at`) VALUES
-(1, 'Lan quế phường', 'Truyện này là truyện 18+, phim hay, xxx', 2, 'Emiri Suzuhara', NULL, '2017-10-20 04:46:32', '2017-10-18 06:47:00'),
-(2, 'xxx', 'xxx', 2, NULL, NULL, '2017-10-18 07:28:00', '2017-10-18 07:28:00'),
-(3, 'tag cl', 'a', 4, NULL, NULL, '2017-10-20 04:29:03', '2017-10-18 07:28:51'),
-(4, 'a', 'a', 2, NULL, '2017-10-19 04:25:29', '2017-10-19 04:25:29', '2017-10-18 07:29:24'),
-(5, '3', '1', 1, NULL, NULL, '2017-10-20 09:56:54', '2017-10-20 09:56:54'),
-(6, 'Em Không Là Duy Nhất', 'óc Tiên - Em Không Là Duy Nhất | Official Music Video Đăng ký Kênh: http://emvn.co/TocTien_Subscribe', 1, 'Music', NULL, '2017-10-23 06:30:44', '2017-10-23 06:30:44');
+INSERT INTO `posts` (`id`, `name`, `content`, `category_id`, `user_id`, `tag`, `status`, `deleted_at`, `updated_at`, `created_at`) VALUES
+(1, 'Lan quế phường', '<p><img alt=\"\" src=\"/img/images/%5E%5E.jpg\" style=\"height:85px; width:100px\" />Chỉ l&agrave; test th&ocirc;i m&agrave;</p>', '2', 0, 'Emiri Suzuhara', 2, NULL, '2017-10-26 06:47:02', '2017-10-18 06:47:00'),
+(2, 'xxx', 'xxx', '2', 0, NULL, 2, NULL, '2017-10-18 07:28:00', '2017-10-18 07:28:00'),
+(3, 'tag cl', 'a', '4', 0, NULL, 2, NULL, '2017-10-20 04:29:03', '2017-10-18 07:28:51'),
+(4, 'a', 'a', '2', 0, NULL, 2, '2017-10-19 04:25:29', '2017-10-19 04:25:29', '2017-10-18 07:29:24'),
+(5, '3', '1', '1', 0, NULL, 2, NULL, '2017-10-20 09:56:54', '2017-10-20 09:56:54'),
+(6, 'Em Không Là Duy Nhất', 'óc Tiên - Em Không Là Duy Nhất | Official Music Video Đăng ký Kênh: http://emvn.co/TocTien_Subscribe', '1', 0, 'Music', 2, NULL, '2017-10-23 06:30:44', '2017-10-23 06:30:44');
 
 -- --------------------------------------------------------
 
@@ -111,6 +109,7 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `role` int(11) NOT NULL DEFAULT '2',
   `remember_token` varchar(100) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL,
@@ -121,18 +120,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `name`, `remember_token`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'levanhuy93@gmail.com', '$2y$10$i6O.64qXnQlNEMDKiuxfRepqDWZ5t.A/dmMa7nVmgcV6e/2xFlHzG', 'Huy', 'DxtNHZmEf8X6AKaRxyBDsScq49V7KlTkcAeZpijm0jQ130YAnIH1c7UATa05', NULL, '2017-10-23 03:17:14', '2017-10-23 03:17:14');
+INSERT INTO `users` (`id`, `email`, `password`, `name`, `role`, `remember_token`, `deleted_at`, `created_at`, `updated_at`) VALUES
+(1, 'levanhuy93@gmail.com', '$2y$10$i6O.64qXnQlNEMDKiuxfRepqDWZ5t.A/dmMa7nVmgcV6e/2xFlHzG', 'Huy', 1, 'vRcszueex6yelwFkuJaHlbA8f9oJTGgkLXcSBfdDs7DEDDvEYmVQ4DH96DSl', NULL, '2017-10-23 03:17:14', '2017-10-23 03:17:14'),
+(2, 'ngocnguyen@gmail.com', '$2y$10$3ZHZjD03SJyyHkAyhl9R3e8DiWoK8pKjy/oKD.y/AnzQpV2xYQ4ym', 'Ngọc', 2, 'bKnrkMlKjxx9fYmcHAtMsOhhbHt3ybOrz19eQeNIwWgvRCmXpqXuJ93J1AL0', NULL, '2017-10-25 02:53:20', '2017-10-25 02:53:20');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `categories`
@@ -144,8 +138,7 @@ ALTER TABLE `categories`
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `category_id` (`category_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -156,12 +149,6 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -179,17 +166,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `posts`
---
-ALTER TABLE `posts`
-  ADD CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

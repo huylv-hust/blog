@@ -2,5 +2,10 @@
 
 Route::group(['middleware' => 'web', 'prefix' => 'category', 'namespace' => 'Modules\Category\Http\Controllers'], function()
 {
-    Route::get('/', 'CategoryController@index');
+    Route::get('/create', 'PostController@getCreate')->name('post.create');
+    Route::post('/create', 'PostController@postCreate');
+    Route::get('/edit/{id}', 'PostController@getEdit')->name('post.edit');
+    Route::post('/edit/{id}', 'PostController@postEdit');
+    Route::get('/list', 'PostController@getList')->name('post.list');
+    Route::post('/delete', 'PostController@postDelete')->name('post.delete');
 });

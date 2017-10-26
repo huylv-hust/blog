@@ -10,15 +10,40 @@ use Modules\Post\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
-    public function getCreate()
+    /**
+     * Display a listing of the resource.
+     * @param Request $request
+     * @param Post $post
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index(Request $request, Post $post)
+    {
+        $result = $post->getData($request);
+        $route = route('post.list');
+        $request->session()->put('post_list', $request->fullUrl());
+        $title = 'All Posts';
+        return view('post::index', compact('result', 'route', 'title'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create()
     {
         $route = route('post.create');
-        $category = ['' => ''] + Category::getAllCategory();
+        $category = Category::getAllCategory();
         $title = 'New Post';
         return view('post::create', compact('route', 'category', 'title'));
     }
 
-    public function postCreate(PostRequest $request, Post $post)
+    /**
+     * Store a newly created resource in storage.
+     * @param Request $request
+     * @param Post $post
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function store(Request $request, Post $post)
     {
         $data = $request->all();
         //save
@@ -28,16 +53,35 @@ class PostController extends Controller
         return redirect(route('post.create'));
     }
 
-    public function getEdit($id)
+    /**
+     * Show the specified resource.
+     * @return Response
+     */
+    public function show()
+    {
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit($id)
     {
         $post = Post::findorFail($id);
-        $category = ['' => ''] + Category::getAllCategory();
+        $category = Category::getAllCategory();
         $route = route('post.edit', ['id' => $id]);
         $title = 'Edit Post';
         return view('post::create', compact('post', 'category', 'route', 'title'));
     }
 
-    public function postEdit(PostRequest $request, $id)
+    /**
+     * Update the specified resource in storage.
+     * @param PostRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(PostRequest $request, $id)
     {
         $data = $request->all();
         //save
@@ -48,16 +92,12 @@ class PostController extends Controller
         return redirect(route('post.edit', ['id' => $id]));
     }
 
-    public function getList(Request $request, Post $post)
-    {
-        $result = $post->getData($request);
-        $route = route('post.list');
-        $request->session()->put('post_list', $request->fullUrl());
-        $title = 'All Posts';
-        return view('post::list', compact('result', 'route', 'title'));
-    }
-
-    public function postDelete(Request $request)
+    /**
+     * Remove the specified resource from storage.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Request $request)
     {
         $post = Post::findorFail($request->id);
         if ($post->delete()) {
