@@ -14,4 +14,9 @@ class Constant
         '1' => 'Admin',
         '2' => 'Editor'
     ];
+    public static $status = [
+        ''  => 'Status',
+        '1' => 'Active',
+        '2' => 'Deactive'
+    ];
 }

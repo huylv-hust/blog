@@ -27,6 +27,7 @@ class Post extends Model
     public function __construct()
     {
         $this->user_id = Auth::guard('users')->user()->id;
+        parent::__construct();
     }
 
     public function users()
@@ -50,6 +51,7 @@ class Post extends Model
 
     public function getData($filter)
     {
+        dd(self::all());
         $query = $this->getWhere($filter);
         return $query->paginate(Constant::$limit);
     }

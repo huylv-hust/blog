@@ -6,6 +6,8 @@ use App\Http\Constant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Mockery\CountValidator\Exception;
 
 class Category extends Model
 {
@@ -16,7 +18,8 @@ class Category extends Model
     protected $fillable = [
         'id',
         'name',
-        'user_id'
+        'user_id',
+        'status'
     ];
     protected $dates = ['deleted_at'];
     protected $user_id;
@@ -24,6 +27,7 @@ class Category extends Model
     public function __construct()
     {
         $this->user_id = Auth::guard('users')->user()->id;
+        parent::__construct();
     }
 
     public function users()
@@ -37,7 +41,7 @@ class Category extends Model
             ->where('status', '1')
             ->get()
             ->toArray();
-        $result  = array_column($query, 'name', 'id');
+        $result = array_column($query, 'name', 'id');
         return $result;
     }
 
@@ -59,5 +63,23 @@ class Category extends Model
     {
         $query = $this->getWhere($filter);
         return $query->paginate(Constant::$limit);
+    }
+
+    public function deleteData($id)
+    {
+        DB::beginTransaction();
+        try {
+            foreach (Category::whereIn('id', $id)->cursor() as $category) {
+                if (!$category->delete()) {
+                    DB::rollback();
+                    return false;
+                }
+            }
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollback();
+        }
+        return false;
     }
 }

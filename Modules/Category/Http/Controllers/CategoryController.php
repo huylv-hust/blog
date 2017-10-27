@@ -68,14 +68,41 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     * @return Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy()
+    public function destroy(Category $category, Request $request)
     {
+        $id = $request->id;
+        $request->session()->flash('error', '最低一つレコードを選んでください。');
+        if (!empty($id)) {
+            $result = $category->deleteData($id = $request->id);
+            if ($result) {
+                $request->session()->flash('success', '完了しました。');
+            } else {
+                $request->session()->flash('error', '失敗しました。');
+            }
+        }
+        return redirect()->back();
     }
 
-    public function status()
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function status(Request $request)
     {
+        $id = $request->id;
+        $status = $request->status;
+        $request->session()->flash('error', '最低一つレコードを選んでください。');
+        if (!empty($id)) {
+            $result = Category::whereIn('id', $id)->update(['status' => $status]);
+            if ($result) {
+                $request->session()->flash('success', '完了しました。');
+            } else {
+                $request->session()->flash('error', '失敗しました。');
+            }
+        }
+        return redirect()->back();
     }
 }
